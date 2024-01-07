@@ -2,7 +2,7 @@
 
 ## Use
 
-Go to the website [swagger.io](https://editor.swagger.io/)
+* Go to the website [swagger.io](https://editor.swagger.io/)
 
-Import file openapi.yaml
+* Import file openapi.yaml
 
