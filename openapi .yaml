@@ -1,0 +1,140 @@
+openapi: 3.0.0
+info:
+  title: Магазин игрушек OpenAPI спецификация
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Dev server
+paths:
+  /toys:
+    get:
+      summary: Метод получения списка игрушек
+      tags: 
+        - Toys
+      operationId: getAllToys
+      responses:
+        '200':
+          description: Успешный ответ со списком игрушек
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Toys"
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Error" 
+    post:
+      summary: Метод создания игрушки
+      tags: 
+        - Toys
+      operationId: createToy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Toy"
+      responses:
+        '200':
+          description: Успешный ответ с созданной игрушкой
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Toys"
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Error" 
+  /toys/{toy_id}:
+    get:
+      summary: Метод получения игрушки по индентификатору
+      tags: 
+        - Toys
+      operationId: getToyById
+      parameters: 
+        - name : toy_id
+          in: path
+          required: true
+          description: Идентификатор игрушки
+          schema:
+            type: string
+          example : 55fdc25d-8457-4c55-919a-497ebdf10eaf
+      responses:
+        '200':
+          description: Успешный ответ с одной игрушкой
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Toy"
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления игрушки по индентификатору
+      tags: 
+      - Toys
+      operationId: deleteToyByid
+      parameters: 
+        - name : toy_id
+          in: path
+          required: true
+          description: Идентификатор игрушки
+          schema:
+            type: string
+          example : 55fdc25d-8457-4c55-919a-497ebdf10eaf
+      responses:
+        '200':
+          description: Успешное удаление игрушки
+          content:
+            application/json: {}
+        'default':
+          description: Все нестандартное
+          content:
+            application/json:
+             schema:
+               $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Toy:
+      type: object
+      required:
+        - name
+        - status
+      properties:
+        toy_id:
+           type: string
+           example : 55fdc25d-8457-4c55-919a-497ebdf10eaf
+        name:
+           type: string
+           example: Train
+        status:
+           type: string
+           enum:
+            - new
+            - old
+            - broken
+           description: Состояние игрушки
+        created_at:
+           type: string
+           format: 2024-07-01T18:00:00+01
+    Toys:
+      type: array
+      items:
+        $ref: "#/components/schemas/Toy"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+         type: integer
+        message:
+         type: string
